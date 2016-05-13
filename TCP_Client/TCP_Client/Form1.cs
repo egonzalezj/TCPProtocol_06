@@ -44,21 +44,36 @@ namespace TCP_Client
 
             try
             {
-                client = new TcpClient();
-                //Make TcpClient connection
-                client.Connect(ep);
-                //Updates status textBox
-                txt_connectionStatus.Text = "Connected!";
-                txt_connectionStatus.BackColor = Color.Green;
-                //Get local IP address
-                IPAddress clientIP = IPAddress.Parse(((IPEndPoint)client.Client.LocalEndPoint).Address.ToString());
-                //Get local Port
-                string clientPort = ((IPEndPoint)client.Client.LocalEndPoint).Port.ToString();
-                //Display local IP address and port
-                txt_localIP.Text = clientIP.ToString();
-                txt_localPort.Text = clientPort;
-                //Enables message textBox
-                txt_message.Enabled = true;
+                if (txt_connectionStatus.BackColor == Color.Red)
+                {
+                    client = new TcpClient();
+                    //Make TcpClient connection
+                    client.Connect(ep);
+                    //Updates status textBox
+                    txt_connectionStatus.Text = "Connected!";
+                    txt_connectionStatus.BackColor = Color.Green;
+                    //Get local IP address
+                    IPAddress clientIP = IPAddress.Parse(((IPEndPoint)client.Client.LocalEndPoint).Address.ToString());
+                    //Get local Port
+                    string clientPort = ((IPEndPoint)client.Client.LocalEndPoint).Port.ToString();
+                    //Display local IP address and port
+                    txt_localIP.Text = clientIP.ToString();
+                    txt_localPort.Text = clientPort;
+                    //Enables message textBox
+                    txt_message.Enabled = true;
+                    btn_connect.Text = "Disconnect";
+                }
+                else
+                {
+                    client.Close();
+                    //Updates status textBox
+                    txt_connectionStatus.Text = "Disconnected!";
+                    txt_connectionStatus.BackColor = Color.Red;
+                    btn_connect.Text = "Connect";
+                    txt_message.Enabled = false;
+                    btn_send.Enabled = false;
+                }
+                
             }
             catch
             {
